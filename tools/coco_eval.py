@@ -31,24 +31,38 @@ if __name__ == "__main__":
     #     # weights="./weights/yolov5s.pt", batch_size=16, imgsz=640, save_json=True
     # )
     #
+
+    # ori_imgIds = [x for x in os.listdir('/d/dataset/COCO/images/val2017')]
+    # with open("val_count.txt", "r") as f:
+    #     count_list = [c.strip() for c in f.readlines()]
+    # imgIds = [int(Path(x).stem) for x in ori_imgIds if x not in count_list]
+
     anno = COCO('/d/dataset/COCO/annotations/instances_val2017.json')  # init annotations api
-    pred = anno.loadRes('./predictions.json')  # init predictions api
-    # eval = COCOeval(anno, pred, 'bbox')
-    eval = COCOeval(anno, pred)
-    # eval.params.imgIds = [int(Path(x).stem) for x in os.listdir('/d/dataset/COCO/images/val2017')]  # image IDs to evaluate
-    eval.evaluate()
-    eval.accumulate()
-    eval.summarize()
+    pred = anno.loadRes('/home/laughing/codes/yolov5-seg/runs/val-seg/crop-0.1/best_predictions.json')  # init predictions api
+    eval_bbox = COCOeval(anno, pred, 'bbox')
+    eval_seg = COCOeval(anno, pred)
+    eval_bbox.params.imgIds = [int(Path(x).stem) for x in os.listdir('/d/dataset/COCO/images/val2017_part')]  # image IDs to evaluate
+    eval_seg.params.imgIds = [int(Path(x).stem) for x in os.listdir('/d/dataset/COCO/images/val2017_part')]  # image IDs to evaluate
+    # eval_bbox.params.imgIds = imgIds
+    # eval_seg.params.imgIds = imgIds
+
+    eval_bbox.evaluate()
+    eval_bbox.accumulate()
+    eval_bbox.summarize()
+
+    eval_seg.evaluate()
+    eval_seg.accumulate()
+    eval_seg.summarize()
 
     # new_predictions = []
-    # with open('./runs/val/exp/predictions.json', 'r') as f:
+    # with open('/home/laughing/codes/yolov5-seg/runs/val-seg/base-crop/best_predictions.json', 'r') as f:
     #     preditions = json.load(f)
     # for p in preditions:
     #     category_id = int(p["category_id"])
     #     p["category_id"] = coco80_to_coco91_class()[category_id]
-    #     new_preditions.append(p)
+    #     new_predictions.append(p)
     #
-    # with open("predictions.json", "w") as f:
+    # with open("/home/laughing/codes/yolov5-seg/runs/val-seg/base-crop/best_predictions.json", "w") as f:
     #     json.dump(new_predictions, f)
     # img_root = '/d/dataset/COCO/images/val2017'
     # print(preditions[0])

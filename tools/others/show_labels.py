@@ -27,16 +27,17 @@ dataloader, dataset = create_dataloader(
             # '/d/baidubase/COCO/val_yolo/images/train',
             # 'data/license_plates/images/train/',
             # '/d/projects/research/yolov5/data/coco/train2017.txt',
-            '/d/projects/research/yolov5/data/coco/val2017.txt',
+            # '/d/projects/research/yolov5/data/coco/val2017.txt',
             # "/home/laughing/code/yolov5-6/data/seg/coco_02/images/train",
+            "/d/dataset/smoke/smoke_pic/images",
             imgsz=640,
-            batch_size=4,
+            batch_size=16,
             stride=32,
             augment=False,
             shuffle=True,
             rank=-1,
             hyp=hyp,
-            mask_head=True
+            mask_head=False
 )
 cv2.namedWindow("mosaic", cv2.WINDOW_NORMAL)
 
